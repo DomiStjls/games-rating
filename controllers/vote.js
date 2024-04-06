@@ -12,7 +12,6 @@ async function voteRouteController(req, res) {
             const body = await parseBody(req);
             const data = JSON.parse(body);
             const rating = createRating(data, config.WEIGHT);
-
             const ratingFile = await fs.readFile(config.PATH_TO_RATING_FILE);
             const ratingArray = JSON.parse(ratingFile);
             const newRating = updateRating(ratingArray, data.id, rating);
@@ -21,6 +20,7 @@ async function voteRouteController(req, res) {
             res.setHeader("Content-Type", "application/json");
             res.end(JSON.stringify(newRating.sort((a, b) => b.rating - a.rating)));
         } catch (error) {
+            console.log(error);
             res.statusCode = 500;
             res.end("Internal Server Error");
         }
